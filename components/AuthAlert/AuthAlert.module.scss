@@ -1,0 +1,27 @@
+.content {
+  button {
+    position: relative;
+    svg {
+      position: absolute !important;
+      left: 10px !important;
+    }
+  }
+}
+.title {
+  font-size: 20px !important;
+  margin-bottom: 20px !important;
+}
+.emailSection {
+  display: flex;
+}
+.backButton {
+  border-radius: 10px;
+  width: 30px !important;
+  height: 30px !important;
+  margin-right: 10px;
+  padding: 1px;
+}
+.buttonsSection {
+  display: flex;
+  justify-content: space-between;
+}

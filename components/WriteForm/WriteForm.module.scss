@@ -1,0 +1,18 @@
+.titleField {
+  padding-left: 30px;
+  padding-bottom: 10px;
+  &::before,
+  &::after {
+    display: none;
+  }
+  input {
+    font-size: 28px;
+  }
+}
+.container {
+  height: 100%;
+}
+.editor {
+  font-size: 18px;
+  height: calc(100vh - 220px);
+}
