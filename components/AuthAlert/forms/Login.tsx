@@ -1,4 +1,4 @@
-import { Button, TextField, Typography } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
 import React from 'react';
 import styles from '../AuthAlert.module.scss';
 import BackButton from '@material-ui/icons/ArrowBack';
@@ -15,10 +15,8 @@ const Login: React.FC<LoginProps> = ({ setFormType }) => {
     resolver: yupResolver(LoginFormSchema),
     mode: 'onBlur',
   });
-  console.log(form.formState.errors);
-  const onSubmit = (d) => {
-    console.log(d);
-  };
+  console.log(form.formState);
+  const onSubmit = (d) => {};
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>

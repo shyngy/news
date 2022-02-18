@@ -4,7 +4,6 @@ import { MainLayout } from '../../layouts/MainLayout';
 import styles from './Custom404.module.scss';
 export default function Custom404() {
   const router = useRouter();
-  console.log(router);
   const onBackButton = () => {
     router.back();
   };
