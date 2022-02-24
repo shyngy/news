@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { RegisterDto, LoginDto } from './types';
+import { RegisterDto, LoginDto, ResponseUser } from './types';
 
 const instance = axios.create({
   baseURL: 'http://localhost:8888',
@@ -10,10 +10,18 @@ const instance = axios.create({
 
 export const UserApi = {
   async register(dto: RegisterDto) {
-    const data = await instance.post('/auth/register', dto);
+    const { data } = await instance.post<RegisterDto, { data: ResponseUser }>(
+      '/auth/register',
+      dto
+    );
+    return data;
   },
 
   async login(dto: LoginDto) {
-    const data = await instance.post('/auth/login');
+    const { data } = await instance.post<RegisterDto, { data: ResponseUser }>(
+      '/auth/login',
+      dto
+    );
+    return data;
   },
 };

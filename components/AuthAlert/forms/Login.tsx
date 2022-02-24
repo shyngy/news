@@ -7,16 +7,39 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoginFormSchema } from '../../../utils/validationSchemes';
 import FormField from '../../FormField';
+import Alert from '@material-ui/lab/Alert';
+import { LoginDto } from '../../../utils/api/types';
+import { setCookie } from 'nookies';
+import { UserApi } from '../../../utils/api';
+import { useRootDispatch } from '../../../store/hooks';
+import { setUserData } from '../../../store/slices/userSlice';
 interface LoginProps {
   setFormType: (formType: AuthFormType) => () => void;
 }
 const Login: React.FC<LoginProps> = ({ setFormType }) => {
+  const dispatch = useRootDispatch();
+  const [errorMessage, setErrorMessage] = React.useState('');
   const form = useForm({
     resolver: yupResolver(LoginFormSchema),
     mode: 'onBlur',
   });
-  console.log(form.formState);
-  const onSubmit = (d) => {};
+
+  const onSubmit = async (dto: LoginDto) => {
+    try {
+      const data = await UserApi.login(dto);
+      setCookie(null, 'authToken', data.token, {
+        maxAge: 30 * 24 * 60 * 60,
+        path: '/',
+      });
+      setErrorMessage('');
+      dispatch(setUserData(data));
+    } catch (error) {
+      if (error.response) {
+        setErrorMessage(error.response.data.message);
+      }
+    }
+  };
+
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -37,6 +60,7 @@ const Login: React.FC<LoginProps> = ({ setFormType }) => {
 
         <FormField name="email" label="Почта" />
         <FormField name="password" label="пароль" />
+        {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
         <div className={styles.buttonsSection}>
           <Button
             type="submit"

@@ -25,8 +25,11 @@ import {
 
 import styles from './Header.module.scss';
 import { AuthAlert } from '../AuthAlert';
+import { useRootSelector } from '../../store/hooks';
+import { selectUserData } from '../../store/slices/userSlice';
 
 export const Header: React.FC = () => {
+  const userData = useRootSelector(selectUserData);
   const [visible, setVisible] = React.useState(false);
   const onVisible = (isVisible: boolean) => {
     return () => {
@@ -66,20 +69,23 @@ export const Header: React.FC = () => {
         <IconButton>
           <NotificationIcon />
         </IconButton>
-        {/* <Link href={`/profile/1`}>
-          <a className="d-flex align-center">
-            <Avatar
-              className={styles.avatar}
-              alt="Remy Sharp"
-              src="https://leonardo.osnova.io/5ffeac9a-a0e5-5be6-98af-659bfaabd2a6/-/scale_crop/108x108/-/format/webp/"
-            />
-            <ArrowBottom />
-          </a>
-        </Link> */}
-        <div onClick={onVisible(true)} className={styles.loginButton}>
-          <UserIcon />
-          <span>Войти</span>
-        </div>
+        {userData ? (
+          <Link href={`/profile/1`}>
+            <a className="d-flex align-center">
+              <Avatar
+                className={styles.avatar}
+                alt="Remy Sharp"
+                src="https://leonardo.osnova.io/5ffeac9a-a0e5-5be6-98af-659bfaabd2a6/-/scale_crop/108x108/-/format/webp/"
+              />
+              <ArrowBottom />
+            </a>
+          </Link>
+        ) : (
+          <div onClick={onVisible(true)} className={styles.loginButton}>
+            <UserIcon />
+            <span>Войти</span>
+          </div>
+        )}
       </div>
 
       <AuthAlert visible={visible} onVisible={onVisible} />

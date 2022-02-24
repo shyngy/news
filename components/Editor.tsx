@@ -12,7 +12,7 @@ const Editor = () => {
           editor.destroy();
         })
         .catch((error) => {
-          console.log('error at destroy', error);
+          console.error('error at destroy', error);
         });
     };
   }, []);
