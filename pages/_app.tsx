@@ -1,15 +1,16 @@
 import Head from 'next/head';
 
 import { Header } from '../components/Header';
-import { store } from '../store';
+import { store, wrapper } from '../store';
 import { ThemeProvider, CssBaseline } from '@material-ui/core';
 import { theme } from '../theme';
 
 import '../styles/globals.scss';
 import 'macro-css';
 import { Provider } from 'react-redux';
+import { AppProps } from 'next/dist/shared/lib/router/router';
 
-function MyApp({ Component, pageProps }) {
+function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
@@ -28,13 +29,12 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Provider store={store}>
-          <Header />
-          <Component {...pageProps} />
-        </Provider>
+
+        <Header />
+        <Component {...pageProps} />
       </ThemeProvider>
     </>
   );
 }
 
-export default MyApp;
+export default wrapper.withRedux(App);
