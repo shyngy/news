@@ -1,12 +1,12 @@
 import { NextPage } from 'next';
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import { MainLayout } from '../layouts/MainLayout';
-import WriteForm from '../components/WriteForm';
+import { MainLayout } from '../../layouts/MainLayout';
+import WriteForm from '../../components/WriteForm';
+
 const WritePage: NextPage = () => {
   return (
     <MainLayout className="main-layout-white" hideComments hideMenu>
-      <WriteForm />
+      <WriteForm data={null} />
     </MainLayout>
   );
 };

@@ -1,10 +1,23 @@
 import React from 'react';
-import EditorJS from '@editorjs/editorjs';
-const Editor = () => {
+import EditorJS, { OutputData } from '@editorjs/editorjs';
+
+interface EditorProps {
+  onChange: (blocks: OutputData['blocks']) => void;
+  initialBlocks: OutputData['blocks'];
+}
+
+const Editor: React.FC<EditorProps> = ({ onChange, initialBlocks }) => {
   React.useEffect(() => {
     const editor = new EditorJS({
       holder: 'editor',
       placeholder: 'Введите текст',
+      data: {
+        blocks: initialBlocks,
+      },
+      async onChange() {
+        const { blocks } = await editor.save();
+        onChange(blocks);
+      },
     });
     return () => {
       editor.isReady

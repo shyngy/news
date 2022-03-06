@@ -14,7 +14,7 @@ type Comment = {
 };
 
 interface PostCommentsProps {
-  items: Comment[];
+  items: [];
 }
 
 const PostComments: React.FC<PostCommentsProps> = ({ items }) => {

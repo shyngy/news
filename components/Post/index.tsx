@@ -6,27 +6,31 @@ import Image from 'next/image';
 import styles from './Post.module.scss';
 import { PostActions } from '../PostActions';
 
-export const Post: React.FC = () => {
+interface PostProps {
+  title: string;
+  id: number;
+  description: string;
+  imageUrl?: string;
+}
+
+export const Post: React.FC<PostProps> = ({
+  title,
+  description,
+  imageUrl,
+  id,
+}) => {
   return (
     <Paper elevation={0} className="p-20" classes={{ root: styles.paper }}>
       <Typography variant="h5" className={styles.title}>
-        <Link href="/news/test-123">
-          <a>
-            Кот прилёг отдохнуть в английском парке миниатюр — и стал героем
-            шуток и фотожаб о «гигантском пушистом захватчике»
-          </a>
+        <Link href={`/news/${id}`}>
+          <a>{title}</a>
         </Link>
       </Typography>
-      <Typography className="mt-10 mb-15">
-        Пока одни не могли соотнести размеры животного и окружения, другие
-        начали создавать апокалиптические сюжеты с котом в главной роли.
-      </Typography>
+      <Typography className="mt-10 mb-15">{description}</Typography>
       <div className={styles.imageContainer}>
-        <Image
-          src="https://leonardo.osnova.io/a21ca5a9-d95b-560d-9a6f-9fa87eff7fcd/-/preview/600/-/format/webp/"
-          height={600}
-          width={700}
-        />
+        {imageUrl && (
+          <Image alt={title} src={imageUrl} height={600} width={700} />
+        )}
       </div>
       <PostActions />
     </Paper>

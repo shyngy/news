@@ -1,34 +1,44 @@
-import { GetServerSideProps } from 'next';
-import { parseCookies } from 'nookies';
+import { GetServerSideProps, NextPage } from 'next';
+
 import { Post } from '../components/Post';
 import { MainLayout } from '../layouts/MainLayout';
-import { wrapper } from '../store';
-import { setUserData } from '../store/slices/userSlice';
-import { UserApi } from '../utils/api';
+import { Api } from '../utils/api';
+import { PostData } from '../utils/api/types';
+interface HomeProps {
+  posts: PostData[];
+}
+const Home: NextPage<HomeProps> = ({ posts }) => {
+  console.log(posts);
 
-export default function Home() {
   return (
     <MainLayout>
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
+      {posts.map((post) => (
+        <Post
+          key={post.id}
+          id={post.id}
+          title={post.title}
+          description={post.description}
+        />
+      ))}
     </MainLayout>
   );
-}
+};
 
-export const getServerSideProps: GetServerSideProps =
-  wrapper.getServerSideProps((store) => async (context) => {
-    try {
-      const { authToken } = parseCookies(context);
-      const userData = await UserApi.getMe(authToken);
-      store.dispatch(setUserData(userData));
-
-      return { props: {} };
-    } catch (error) {
-      console.error('!###', error);
-      return { props: {} };
-    }
-  });
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  try {
+    const posts = await Api().post.getAll();
+    return {
+      props: {
+        posts,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      props: {
+        posts: null,
+      },
+    };
+  }
+};
+export default Home;

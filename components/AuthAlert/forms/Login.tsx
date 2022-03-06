@@ -10,9 +10,10 @@ import FormField from '../../FormField';
 import Alert from '@material-ui/lab/Alert';
 import { LoginDto } from '../../../utils/api/types';
 import { setCookie } from 'nookies';
-import { UserApi } from '../../../utils/api';
+import { UserApi } from '../../../utils/api/user';
 import { useRootDispatch } from '../../../store/hooks';
 import { setUserData } from '../../../store/slices/userSlice';
+import { Api } from '../../../utils/api';
 interface LoginProps {
   setFormType: (formType: AuthFormType) => () => void;
 }
@@ -26,8 +27,8 @@ const Login: React.FC<LoginProps> = ({ setFormType }) => {
 
   const onSubmit = async (dto: LoginDto) => {
     try {
-      const data = await UserApi.login(dto);
-      setCookie(null, 'authToken', data.token, {
+      const data = await Api().user.login(dto);
+      setCookie(null, 'newsToken', data.token, {
         maxAge: 30 * 24 * 60 * 60,
         path: '/',
       });

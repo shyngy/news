@@ -8,11 +8,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { RegisterFormSchema } from '../../../utils/validationSchemes';
 import FormField from '../../FormField';
 import { RegisterDto, ResponseUser } from '../../../utils/api/types';
-import { UserApi } from '../../../utils/api';
+import { UserApi } from '../../../utils/api/user';
 import Alert from '@material-ui/lab/Alert';
 import { setCookie } from 'nookies';
 import { useRootDispatch } from '../../../store/hooks';
 import { setUserData } from '../../../store/slices/userSlice';
+import { Api } from '../../../utils/api';
 interface RegisterProps {
   setFormType: (formType: AuthFormType) => () => void;
 }
@@ -25,8 +26,8 @@ const Register: React.FC<RegisterProps> = ({ setFormType }) => {
 
   const onSubmit = async (dto: RegisterDto) => {
     try {
-      const data = await UserApi.register(dto);
-      setCookie(null, 'authToken', data.token, {
+      const data = await Api().user.register(dto);
+      setCookie(null, 'newsToken', data.token, {
         maxAge: 30 * 24 * 60 * 60,
         path: '/',
       });
