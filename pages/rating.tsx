@@ -12,8 +12,17 @@ import {
 
 import { MainLayout } from '../layouts/MainLayout';
 import { FollowButton } from '../components/FollowButton';
+import { NextPage } from 'next';
+import { GetAllOrPick } from '../utils/api/types';
+import { Api } from '../utils/api';
 
-export default function Rating() {
+interface RatingPageProps {
+  users: GetAllOrPick[];
+}
+
+const Rating: NextPage<RatingPageProps> = ({ users }) => {
+  console.log(users);
+  const month = new Date().toLocaleString('default', { month: 'long' });
   return (
     <MainLayout>
       <Paper className="pl-20 pt-20 pr-20 mb-20" elevation={0}>
@@ -34,7 +43,7 @@ export default function Rating() {
           indicatorColor="primary"
           textColor="primary"
         >
-          <Tab label="Август" />
+          <Tab label={month} />
           <Tab label="За 3 месяцуа" />
           <Tab label="За всё время" />
         </Tabs>
@@ -50,18 +59,39 @@ export default function Rating() {
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow>
-              <TableCell component="th" scope="row">
-                <span className="mr-15">1</span>Вася Пупкин
-              </TableCell>
-              <TableCell align="right">540</TableCell>
-              <TableCell align="right">
-                <FollowButton />
-              </TableCell>
-            </TableRow>
+            {users.map((user) => (
+              <TableRow key={user.id}>
+                <TableCell component="th" scope="row">
+                  <span className="mr-15">{user.id}</span>
+                  {user.fullName}
+                </TableCell>
+                <TableCell align="right">{user.commentsCount}</TableCell>
+                <TableCell align="right">
+                  <FollowButton />
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </Paper>
     </MainLayout>
   );
-}
+};
+
+export const getServerSideProps = async () => {
+  try {
+    const users = await Api().user.getAllOrPick();
+    return {
+      props: {
+        users,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      props: {},
+    };
+  }
+};
+
+export default Rating;

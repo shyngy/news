@@ -1,7 +1,11 @@
 import { AxiosInstance } from 'axios';
-import { RegisterDto, LoginDto, ResponseUser } from './types';
+import { RegisterDto, LoginDto, ResponseUser, GetAllOrPick } from './types';
 
 export const UserApi = (instance: AxiosInstance) => ({
+  async getAllOrPick() {
+    const { data } = await instance.get<GetAllOrPick>('/users');
+    return data;
+  },
   async register(dto: RegisterDto) {
     const { data } = await instance.post<RegisterDto, { data: ResponseUser }>(
       '/auth/register',

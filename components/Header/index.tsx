@@ -12,6 +12,8 @@ import {
   DialogTitle,
   useTheme,
   useMediaQuery,
+  List,
+  ListItem,
 } from '@material-ui/core';
 import {
   SearchOutlined as SearchIcon,
@@ -27,16 +29,34 @@ import styles from './Header.module.scss';
 import { AuthAlert } from '../AuthAlert';
 import { useRootSelector } from '../../store/hooks';
 import { selectUserData } from '../../store/slices/userSlice';
+import { Api } from '../../utils/api';
+import { PostData } from '../../utils/api/types';
 
 export const Header: React.FC = () => {
   const userData = useRootSelector(selectUserData);
   const [visible, setVisible] = React.useState(false);
+  const [posts, setPosts] = React.useState<PostData[] | []>([]);
+  const [searchInputValue, setSearchInputValue] = React.useState('');
   const onVisible = (isVisible: boolean) => {
     return () => {
       setVisible(isVisible);
     };
   };
-
+  const onChangeSearchInput = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setSearchInputValue(event.target.value);
+    try {
+      if (!event.target.value) {
+        return setPosts([]);
+      }
+      const data = await Api().post.search({ title: event.target.value });
+      setPosts(data.posts);
+      console.log(posts);
+    } catch (e) {
+      console.warn(e);
+    }
+  };
   return (
     <Paper classes={{ root: styles.root }} elevation={0}>
       <div className="d-flex align-center">
@@ -51,7 +71,25 @@ export const Header: React.FC = () => {
 
         <div className={styles.searchBlock}>
           <SearchIcon />
-          <input placeholder="Поиск" />
+          <input
+            value={searchInputValue}
+            placeholder="Поиск"
+            onChange={onChangeSearchInput}
+          />
+          <Paper className={styles.searchBlockPopup}>
+            {posts &&
+              posts.map((post) => (
+                <List>
+                  <Link href={`/news/${post.id}`}>
+                    <a>
+                      <ListItem button key={post.id}>
+                        {post.title}
+                      </ListItem>
+                    </a>
+                  </Link>
+                </List>
+              ))}
+          </Paper>
         </div>
 
         <Link href="/write">

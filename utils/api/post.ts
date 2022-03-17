@@ -1,6 +1,6 @@
 import { OutputData } from '@editorjs/editorjs';
 import { AxiosInstance } from 'axios';
-import { PostData } from './types';
+import { PostData, SearchPostDto } from './types';
 
 export type CreatePostDto = {
   title: string;
@@ -9,6 +9,12 @@ export type CreatePostDto = {
 export const PostApi = (instance: AxiosInstance) => ({
   async getOne(id: number) {
     const { data } = await instance.get<PostData>(`/posts/${id}`);
+    return data;
+  },
+  async search(query: SearchPostDto) {
+    const { data } = await instance.get('/posts/search', {
+      params: query,
+    });
     return data;
   },
 

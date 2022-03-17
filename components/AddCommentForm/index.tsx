@@ -1,13 +1,25 @@
 import { Button } from '@material-ui/core';
 import Input from '@material-ui/core/Input';
 import React from 'react';
+import { Api } from '../../utils/api';
+import { CommentData } from '../../utils/api/types';
 import styles from './AddCommentForm.module.scss';
 type AddEventListener = Event & {
   path: Node[];
   target: HTMLElement;
 };
-const AddCommentForm = () => {
+
+interface AddCommentFromProps {
+  postId: number;
+  onUpComment: (comment: CommentData) => void;
+}
+
+const AddCommentForm: React.FC<AddCommentFromProps> = ({
+  postId,
+  onUpComment,
+}) => {
   const [clicked, setClicked] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
   const [text, setText] = React.useState('');
   const minRows = clicked ? 5 : 1;
 
@@ -17,6 +29,7 @@ const AddCommentForm = () => {
     if (typeof window === 'undefined') return;
     window.addEventListener('click', onEventListener);
     return () => {
+      if (typeof window === 'undefined') return;
       window.removeEventListener('click', onEventListener);
     };
   }, []);
@@ -32,9 +45,21 @@ const AddCommentForm = () => {
   const inputOnChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(event.target.value);
   };
-  const onAddComment = () => {
-    setClicked(false);
-    setText('');
+  const onAddComment = async () => {
+    try {
+      setIsLoading(true);
+      const comment = await Api().comment.create({
+        postId,
+        text,
+      });
+      onUpComment(comment);
+      setClicked(false);
+      setText('');
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -46,6 +71,7 @@ const AddCommentForm = () => {
         fullWidth
         multiline
         value={text}
+        disabled={isLoading}
         onChange={inputOnChange}
       />
       {clicked && (
@@ -55,6 +81,7 @@ const AddCommentForm = () => {
           variant="contained"
           onClick={onAddComment}
           id="add-button"
+          disabled={isLoading}
         >
           Опубликовать
         </Button>
