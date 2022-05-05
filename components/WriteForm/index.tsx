@@ -23,7 +23,7 @@ const WriteForm: React.FC<WriteFormProps> = ({ data }) => {
   const onChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
-  console.log(title);
+
   const onChangeEditor = (blocks: Array<OutputBlockData>) => {
     setBlocks(blocks);
   };
@@ -42,11 +42,12 @@ const WriteForm: React.FC<WriteFormProps> = ({ data }) => {
         await Api().post.update(data.id, postObj);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
   };
+
   return (
     <div className={styles.container}>
       <Input

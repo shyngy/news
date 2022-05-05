@@ -18,14 +18,10 @@ const WritePage: NextPage<WritePageProps> = ({ post }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  console.log(context.params.id);
-
   try {
     const id = Number(context.params.id);
     const post = await Api(context).post.getOne(id);
     const user = await Api(context).user.getMe();
-    console.log(post);
-
     if (post.user.id !== user.id) {
       return {
         props: {},
@@ -40,7 +36,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       props: { post },
     };
   } catch (error) {
-    console.log('!', error);
     return {
       props: {},
       redirect: {

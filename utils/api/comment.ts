@@ -16,8 +16,6 @@ export const CommentApi = (instance: AxiosInstance) => ({
         postId,
       },
     });
-    console.log(data);
-
     return data;
   },
 
@@ -28,6 +26,7 @@ export const CommentApi = (instance: AxiosInstance) => ({
     >('/comments', dto);
     return data;
   },
+
   async remove(id: number) {
     return await instance.delete(`/comments/${id}`);
   },

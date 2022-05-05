@@ -5,13 +5,6 @@ import {
   Button,
   IconButton,
   Avatar,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  useTheme,
-  useMediaQuery,
   List,
   ListItem,
 } from '@material-ui/core';
@@ -37,11 +30,13 @@ export const Header: React.FC = () => {
   const [visible, setVisible] = React.useState(false);
   const [posts, setPosts] = React.useState<PostData[] | []>([]);
   const [searchInputValue, setSearchInputValue] = React.useState('');
+
   const onVisible = (isVisible: boolean) => {
     return () => {
       setVisible(isVisible);
     };
   };
+
   const onChangeSearchInput = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -52,11 +47,11 @@ export const Header: React.FC = () => {
       }
       const data = await Api().post.search({ title: event.target.value });
       setPosts(data.posts);
-      console.log(posts);
     } catch (e) {
       console.warn(e);
     }
   };
+
   return (
     <Paper classes={{ root: styles.root }} elevation={0}>
       <div className="d-flex align-center">

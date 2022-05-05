@@ -3,12 +3,7 @@ import styles from './SideComments.module.scss';
 import Link from 'next/link';
 import { CommentData, PostData, ResponseUser } from '../../utils/api/types';
 import { Avatar } from '@material-ui/core';
-interface CommentItemProps {
-  user: ResponseUser;
 
-  text: string;
-  post: PostData;
-}
 export const CommentItem: React.FC<CommentData> = ({ user, text, post }) => {
   return (
     <div className={styles.commentItem}>

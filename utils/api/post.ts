@@ -11,6 +11,7 @@ export const PostApi = (instance: AxiosInstance) => ({
     const { data } = await instance.get<PostData>(`/posts/${id}`);
     return data;
   },
+
   async search(query: SearchPostDto) {
     const { data } = await instance.get('/posts/search', {
       params: query,
@@ -30,6 +31,7 @@ export const PostApi = (instance: AxiosInstance) => ({
     );
     return data;
   },
+
   async update(id: number, dto: CreatePostDto) {
     const { data } = await instance.patch<CreatePostDto, { data: PostData }>(
       `/posts/${id}`,

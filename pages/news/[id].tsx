@@ -4,7 +4,6 @@ import React from 'react';
 import PostComments from '../../components/PostComments';
 import { GetServerSideProps, NextPage } from 'next';
 import { Api } from '../../utils/api';
-import { OutputBlockData } from '@editorjs/editorjs';
 import { PostData } from '../../utils/api/types';
 
 interface FullPostPageProps {
@@ -21,8 +20,6 @@ const FullPostPage: NextPage<FullPostPageProps> = ({ post }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  console.log(context.params.id);
-
   try {
     const id = Number(context.params.id);
     const post = await Api(context).post.getOne(id);
@@ -30,7 +27,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       props: { post },
     };
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return {
       props: {},
       redirect: {

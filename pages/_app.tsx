@@ -1,7 +1,7 @@
 import Head from 'next/head';
 
 import { Header } from '../components/Header';
-import { store, wrapper } from '../store';
+import { wrapper } from '../store';
 import { ThemeProvider, CssBaseline } from '@material-ui/core';
 import { theme } from '../theme';
 
@@ -9,7 +9,7 @@ import '../styles/globals.scss';
 import 'macro-css';
 
 import { AppProps } from 'next/dist/shared/lib/router/router';
-import { parseCookies } from 'nookies';
+
 import { setUserData } from '../store/slices/userSlice';
 
 import { Api } from '../utils/api';
@@ -18,7 +18,7 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>RJournal</title>
+        <title>News</title>
         <link rel="icon" href="/favicon.ico" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -45,16 +45,10 @@ App.getInitialProps = wrapper.getInitialAppProps(
   (store) =>
     async ({ ctx, Component }) => {
       try {
-        const { newsToken } = parseCookies(ctx);
         const userData = await Api(ctx).user.getMe();
         store.dispatch(setUserData(userData));
       } catch (error) {
-        if (ctx.asPath === '/write') {
-          ctx.res.writeHead(302, {
-            Location: '/403',
-          });
-          ctx.res.end();
-        }
+        console.error(error);
       }
       return {
         pageProps: Component.getInitialProps

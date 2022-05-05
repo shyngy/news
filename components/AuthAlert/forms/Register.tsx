@@ -1,4 +1,4 @@
-import { Button, TextField, Typography } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
 import React from 'react';
 import styles from '../AuthAlert.module.scss';
 import BackButton from '@material-ui/icons/ArrowBack';
@@ -7,9 +7,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { RegisterFormSchema } from '../../../utils/validationSchemes';
 import FormField from '../../FormField';
-import { RegisterDto, ResponseUser } from '../../../utils/api/types';
-import { UserApi } from '../../../utils/api/user';
-import Alert from '@material-ui/lab/Alert';
+import { RegisterDto } from '../../../utils/api/types';
 import { setCookie } from 'nookies';
 import { useRootDispatch } from '../../../store/hooks';
 import { setUserData } from '../../../store/slices/userSlice';

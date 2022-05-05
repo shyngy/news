@@ -26,7 +26,10 @@ export const Post: React.FC<PostProps> = ({
           <a>{title}</a>
         </Link>
       </Typography>
-      <Typography className="mt-10 mb-15">{description}</Typography>
+      <Typography
+        className="mt-10 mb-15"
+        dangerouslySetInnerHTML={{ __html: description }}
+      />
       <div className={styles.imageContainer}>
         {imageUrl && (
           <Image alt={title} src={imageUrl} height={600} width={700} />

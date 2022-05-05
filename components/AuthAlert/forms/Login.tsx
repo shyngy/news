@@ -10,7 +10,7 @@ import FormField from '../../FormField';
 import Alert from '@material-ui/lab/Alert';
 import { LoginDto } from '../../../utils/api/types';
 import { setCookie } from 'nookies';
-import { UserApi } from '../../../utils/api/user';
+
 import { useRootDispatch } from '../../../store/hooks';
 import { setUserData } from '../../../store/slices/userSlice';
 import { Api } from '../../../utils/api';

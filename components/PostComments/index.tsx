@@ -2,26 +2,10 @@ import React from 'react';
 import { UserComment } from '../Comment';
 import { Divider, Paper, Tab, Tabs, Typography } from '@material-ui/core';
 import AddCommentForm from '../AddCommentForm';
-import { Api } from '../../utils/api';
 import { CommentData } from '../../utils/api/types';
 import { useRootSelector } from '../../store/hooks';
 import { selectUserData } from '../../store/slices/userSlice';
 import { useComments } from '../../hooks/useComment';
-// type Comment = {
-//   text: string;
-//   id: number;
-//   createdAt: string;
-//   user: {
-//     fullName: string;
-//     email: string;
-//     id: number;
-//     avatarUrl?: string;
-//   };
-//   post: {
-//     id: number;
-//   };
-// };
-
 interface PostCommentsProps {
   postId: number;
 }
@@ -29,18 +13,20 @@ interface PostCommentsProps {
 const PostComments: React.FC<PostCommentsProps> = ({ postId }) => {
   const userData = useRootSelector(selectUserData);
   const [activeTab, setActiveTab] = React.useState(0);
+  const { comments, setComments } = useComments(postId);
+
   const onChangeTabs = (_: React.ChangeEvent<{}>, newValue: number) => {
     setActiveTab(newValue);
   };
 
-  const { comments, setComments } = useComments(postId);
-
   const onAddComment = (comment: CommentData) => {
     setComments((prev) => [...prev, comment]);
   };
+
   const onRemoveComment = (id: number) => {
     setComments((prev) => prev.filter((comment) => comment.id !== id));
   };
+
   return (
     <Paper elevation={0} className="mt-40 p-30">
       <Typography variant="h6" className="mb-20">

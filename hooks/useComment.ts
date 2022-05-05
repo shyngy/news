@@ -12,9 +12,8 @@ export const useComments = (postId?: number): UseCommentProps => {
       try {
         const comments = await Api().comment.getAll(postId);
         setComments(comments);
-        console.log(comments, 'comment');
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     })();
   }, []);

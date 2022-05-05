@@ -9,9 +9,11 @@ import { useComments } from '../../hooks/useComment';
 export const SideComments = () => {
   const [visible, setVisible] = React.useState(true);
   const { comments } = useComments();
+
   const toggleVisible = () => {
     setVisible(!visible);
   };
+
   return (
     <div className={clsx(styles.root, !visible && styles.rotated)}>
       <h3 onClick={toggleVisible}>

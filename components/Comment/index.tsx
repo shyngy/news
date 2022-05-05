@@ -50,7 +50,7 @@ export const UserComment: React.FC<CommentPostProps> = ({
       await Api().comment.remove(id);
       onRemoveComment(id);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 

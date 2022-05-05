@@ -7,19 +7,19 @@ import { PostData } from '../utils/api/types';
 interface HomeProps {
   posts: PostData[];
 }
-const Home: NextPage<HomeProps> = ({ posts }) => {
-  console.log(posts);
 
+const Home: NextPage<HomeProps> = ({ posts }) => {
   return (
     <MainLayout>
-      {posts.map((post) => (
-        <Post
-          key={post.id}
-          id={post.id}
-          title={post.title}
-          description={post.description}
-        />
-      ))}
+      {posts &&
+        posts.map((post) => (
+          <Post
+            key={post.id}
+            id={post.id}
+            title={post.title}
+            description={post.description}
+          />
+        ))}
     </MainLayout>
   );
 };
@@ -33,7 +33,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return {
       props: {
         posts: null,
@@ -41,4 +41,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 };
+
 export default Home;

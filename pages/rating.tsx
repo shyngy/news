@@ -21,8 +21,8 @@ interface RatingPageProps {
 }
 
 const Rating: NextPage<RatingPageProps> = ({ users }) => {
-  console.log(users);
   const month = new Date().toLocaleString('default', { month: 'long' });
+
   return (
     <MainLayout>
       <Paper className="pl-20 pt-20 pr-20 mb-20" elevation={0}>
@@ -87,7 +87,7 @@ export const getServerSideProps = async () => {
       },
     };
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return {
       props: {},
     };

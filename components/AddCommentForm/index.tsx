@@ -1,13 +1,10 @@
 import { Button } from '@material-ui/core';
 import Input from '@material-ui/core/Input';
 import React from 'react';
+import { useElementOutside } from '../../hooks/useElementOutside';
 import { Api } from '../../utils/api';
 import { CommentData } from '../../utils/api/types';
 import styles from './AddCommentForm.module.scss';
-type AddEventListener = Event & {
-  path: Node[];
-  target: HTMLElement;
-};
 
 interface AddCommentFromProps {
   postId: number;
@@ -18,33 +15,17 @@ const AddCommentForm: React.FC<AddCommentFromProps> = ({
   postId,
   onUpComment,
 }) => {
-  const [clicked, setClicked] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [text, setText] = React.useState('');
-  const minRows = clicked ? 5 : 1;
+  const { clicked, setClicked, minRows } = useElementOutside(
+    '"add-button',
+    'comment-textarea'
+  );
 
-  React.useEffect(() => {
-    // чтобы скрывать и открывать элемент лучше использовать onBlur и onFocus
-    // я сделала через window
-    if (typeof window === 'undefined') return;
-    window.addEventListener('click', onEventListener);
-    return () => {
-      if (typeof window === 'undefined') return;
-      window.removeEventListener('click', onEventListener);
-    };
-  }, []);
-  const onEventListener = (event: AddEventListener) => {
-    const path = event.path || (event.composedPath && event.composedPath());
-    const isButton = path.some((item: HTMLElement) => item.id === 'add-button');
-    if (isButton) return;
-    const isInput = path.some(
-      (item: HTMLElement) => item.id === 'comment-textarea'
-    );
-    setClicked(isInput);
-  };
   const inputOnChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(event.target.value);
   };
+
   const onAddComment = async () => {
     try {
       setIsLoading(true);
@@ -56,7 +37,7 @@ const AddCommentForm: React.FC<AddCommentFromProps> = ({
       setClicked(false);
       setText('');
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
