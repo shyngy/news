@@ -9,8 +9,7 @@ export function useElementOutside(buttonId: string, outElementId: string) {
   const [clicked, setClicked] = React.useState(false);
   const minRows = clicked ? 5 : 1;
   React.useEffect(() => {
-    // чтобы скрывать и открывать элемент лучше использовать onBlur и onFocus
-    // я сделала через window
+    
     if (typeof window === 'undefined') return;
     window.addEventListener('click', onEventListener);
     return () => {
